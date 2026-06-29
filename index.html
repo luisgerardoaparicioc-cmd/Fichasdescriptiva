@@ -671,9 +671,10 @@ const DOCENTES = [
   "Victor Hugo Perez Y Quintana"
 ];
 const CICLOS = ["2025-2026","2026-2027","2027-2028","2028-2029","2029-2030","2030-2031","2031-2032","2032-2033"];
+const REPORTES_NO_DISCIPLINAS = ["Reporte de Prefectura","Reporte de Trabajo Social"];
 const DISCIPLINAS_POR_GRADO = {
-  "1": ["Español","Inglés","Artes","Matemáticas","Biología","Geografía","Historia","Formación Cívica y Ética","Tecnología","Educación Física"],
-  "2": ["Español","Inglés","Artes","Matemáticas","Biología","Física","Historia","Formación Cívica y Ética","Tecnología","Educación Física"]
+  "1": ["Español","Inglés","Artes","Matemáticas","Biología","Geografía","Historia","Formación Cívica y Ética","Tecnología","Educación Física",...REPORTES_NO_DISCIPLINAS],
+  "2": ["Español","Inglés","Artes","Matemáticas","Física","Historia","Formación Cívica y Ética","Tecnología","Educación Física",...REPORTES_NO_DISCIPLINAS]
 };
 const SHEET_URL = "https://script.google.com/macros/s/AKfycbziNlW7KLWO8rT0yKm6YwEdrHlYS_fzIrCfYSfe472zyCq6ci43kh-9IhGChYLUnvajUA/exec";
 const REGISTRO_URL = "https://script.google.com/macros/s/AKfycby18mUKwtHrrr-ESVGw6fsssGV0ILPAywN5BhUL13Jalm-PELF1d12HJuPAUuf19VBV/exec";
@@ -762,6 +763,7 @@ function showPage(i){
   captureState();
   if(i<0 || i>=PAGES.length) return;
   if(i>0 && !docenteFinal().trim()) i = 0;
+  if(PAGES[i] === 'curricular' && esReporteDepartamento()) i = PAGES.indexOf('dificultades');
   currentPage=i;
   const pageName = PAGES[i];
   $$('.page').forEach(p=>p.classList.remove('active'));
@@ -1170,6 +1172,19 @@ function updateSectionActionVisibility(key){
 }
 function getDisciplinesForGrade(g){
   return DISCIPLINAS_POR_GRADO[g] || [];
+}
+function esReporteDepartamento(d = state.datos.disciplina){
+  return REPORTES_NO_DISCIPLINAS.includes(String(d || '').trim());
+}
+function paginaSiguienteDesdeActual(){
+  const pageName = PAGES[currentPage];
+  if(pageName === 'datos' && esReporteDepartamento()) return PAGES.indexOf('dificultades');
+  return currentPage + 1;
+}
+function paginaAnteriorDesdeActual(){
+  const pageName = PAGES[currentPage];
+  if(pageName === 'dificultades' && esReporteDepartamento()) return PAGES.indexOf('datos');
+  return currentPage - 1;
 }
 function getCampoForDisciplina(d,g){
   const item = CURRICULUM.find(x=>x.disciplina===d && x.pda && x.pda[g]);
@@ -1943,6 +1958,13 @@ function renderContenidoSelect(){
     updateCurrActionVisibility();
     return;
   }
+  if(esReporteDepartamento(d)){
+    sel.innerHTML = '<option value="">No aplica para este reporte</option>';
+    sel.dataset.items = '[]';
+    $('#currDetail').innerHTML = '<span class="empty">Prefectura y Trabajo Social no requieren capturar Contenidos o PDA. Continúe con Dificultades.</span>';
+    updateCurrActionVisibility();
+    return;
+  }
   let items = CURRICULUM.filter(x=>x.disciplina===d && x.pda && x.pda[g]);
   const campo = getCampoForDisciplina(d,g) || '';
   const especial = {
@@ -2213,8 +2235,8 @@ function init(){
   $('#contenidoSelect').addEventListener('change',showCurrDetail);
   $('#addCurr').addEventListener('click',addCurrSelected);
   $('#clearCurr').addEventListener('click',()=>{ state.curriculares=[]; const sel=$('#contenidoSelect'); if(sel) sel.value=''; updateCurrActionVisibility(); renderCurrSelected(); saveLocal(false); });
-  $('#prevBtn').addEventListener('click',()=>showPage(currentPage-1));
-  $('#nextBtn').addEventListener('click',async ()=>{ if(currentPage<PAGES.length-1){ if(!validarPaginaAntesDeAvanzar()) return; showPage(currentPage+1); } else { await guardarGenerarPDF(); } });
+  $('#prevBtn').addEventListener('click',()=>showPage(paginaAnteriorDesdeActual()));
+  $('#nextBtn').addEventListener('click',async ()=>{ if(currentPage<PAGES.length-1){ if(!validarPaginaAntesDeAvanzar()) return; showPage(paginaSiguienteDesdeActual()); } else { await guardarGenerarPDF(); } });
   $('#otraMismoGrupo').addEventListener('click',prepararOtraFichaMismoGrupo);
   $('#otraConfig').addEventListener('click',prepararOtraFichaNuevaConfiguracion);
   document.addEventListener('input', e=>{ if(['INPUT','SELECT','TEXTAREA'].includes(e.target.tagName)){ updateFieldStates(); const pageName=PAGES[currentPage]; if(REQUIRED_CAPTURE_PAGES.includes(pageName) && paginaConInformacion(pageName)) limpiarAdvertenciaPagina(pageName); saveLocal(false); } });
