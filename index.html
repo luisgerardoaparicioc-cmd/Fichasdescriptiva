@@ -506,7 +506,7 @@ body :is(.chip,.chip span){font-size:var(--ui-font-chip)!important;}
       <div class="field"><label>Campo formativo y/o disciplina con menor nivel de logro</label><input id="campoDisciplina" readonly placeholder="Se completa al seleccionar disciplina"></div>
       <div class="field" style="margin-top:14px"><label>PDA del grado y disciplina</label><select id="contenidoSelect"><option value="">Seleccione primero grado y disciplina</option></select></div>
       <div id="currDetail" class="currDetail"><span class="empty">Seleccione un PDA para ver el contenido al que pertenece.</span></div>
-      <div class="actions conditionalActions" id="currActions"><button class="btn green" id="addCurr" type="button">Agregar PDA</button><button class="btn secondary" id="clearCurr" type="button">Limpiar selección</button></div>
+      <div class="actions conditionalActions" id="currActions"><button class="btn green" id="addCurr" type="button">Agregar PDA</button></div>
       <h4>PDA agregados</h4>
       <div id="currSelected" class="selectedList"><span class="empty">Sin PDA agregados.</span></div>
     </section>
@@ -515,45 +515,45 @@ body :is(.chip,.chip span){font-size:var(--ui-font-chip)!important;}
       <h2>Dificultades</h2>
       <p class="help">Seleccione dificultades concretas y redactadas de forma respetuosa.</p>
       <div class="field"><label>Dificultad sugerida</label><select class="optionSelect"></select></div>
-      <div class="actions conditionalActions"><button class="btn addOption" type="button">Agregar dificultad</button><button class="btn secondary clearSection" type="button">Limpiar dificultades</button></div>
+      <div class="actions conditionalActions"><button class="btn addOption" type="button">Agregar dificultad</button></div>
       <div class="chips"></div>
-      <div class="field"><label>Observaciones adicionales</label><textarea class="customText" placeholder="Describa dificultades específicas sin etiquetar al alumno..."></textarea></div>
+      <div class="field"><label>Observaciones adicionales (Opcional)</label><textarea class="customText" placeholder="Describa dificultades específicas sin etiquetar al alumno..."></textarea></div>
     </section>
 
     <section class="page" id="page-logros" data-key="logros">
       <h2>Logros</h2>
       <p class="help">Seleccione una frase, agréguela y complemente con observaciones específicas si es necesario.</p>
       <div class="field"><label>Logro sugerido</label><select class="optionSelect"></select></div>
-      <div class="actions conditionalActions"><button class="btn addOption" type="button">Agregar logro</button><button class="btn secondary clearSection" type="button">Limpiar logros</button></div>
+      <div class="actions conditionalActions"><button class="btn addOption" type="button">Agregar logro</button></div>
       <div class="chips"></div>
-      <div class="field"><label>Observaciones adicionales</label><textarea class="customText" placeholder="Escriba logros específicos observados en clase..."></textarea></div>
+      <div class="field"><label>Observaciones adicionales (Opcional)</label><textarea class="customText" placeholder="Escriba logros específicos observados en clase..."></textarea></div>
     </section>
 
     <section class="page" id="page-recAcademicas" data-key="recAcademicas">
       <h2>Aspectos académicos</h2>
       <p class="help">Seleccione recomendaciones académicas para el próximo ciclo escolar.</p>
       <div class="field"><label>Recomendación académica sugerida</label><select class="optionSelect"></select></div>
-      <div class="actions conditionalActions"><button class="btn addOption" type="button">Agregar recomendación</button><button class="btn secondary clearSection" type="button">Limpiar recomendaciones</button></div>
+      <div class="actions conditionalActions"><button class="btn addOption" type="button">Agregar recomendación</button></div>
       <div class="chips"></div>
-      <div class="field"><label>Observaciones adicionales</label><textarea class="customText" placeholder="Agregue estrategias académicas concretas..."></textarea></div>
+      <div class="field"><label>Observaciones adicionales (Opcional)</label><textarea class="customText" placeholder="Agregue estrategias académicas concretas..."></textarea></div>
     </section>
 
     <section class="page" id="page-recSocioemocionales" data-key="recSocioemocionales">
       <h2>Aspectos socioemocionales</h2>
       <p class="help">Seleccione recomendaciones que favorezcan convivencia, seguridad, participación y autorregulación.</p>
       <div class="field"><label>Recomendación socioemocional sugerida</label><select class="optionSelect"></select></div>
-      <div class="actions conditionalActions"><button class="btn addOption" type="button">Agregar recomendación</button><button class="btn secondary clearSection" type="button">Limpiar recomendaciones</button></div>
+      <div class="actions conditionalActions"><button class="btn addOption" type="button">Agregar recomendación</button></div>
       <div class="chips"></div>
-      <div class="field"><label>Observaciones adicionales</label><textarea class="customText" placeholder="Agregue apoyos socioemocionales o de convivencia..."></textarea></div>
+      <div class="field"><label>Observaciones adicionales (Opcional)</label><textarea class="customText" placeholder="Agregue apoyos socioemocionales o de convivencia..."></textarea></div>
     </section>
 
     <section class="page" id="page-recFamilia" data-key="recFamilia">
       <h2>Recomendaciones para los padres de familia</h2>
       <p class="help">Seleccione orientaciones breves, claras y posibles de realizar en casa.</p>
       <div class="field"><label>Recomendación familiar sugerida</label><select class="optionSelect"></select></div>
-      <div class="actions conditionalActions"><button class="btn addOption" type="button">Agregar recomendación</button><button class="btn secondary clearSection" type="button">Limpiar recomendaciones</button></div>
+      <div class="actions conditionalActions"><button class="btn addOption" type="button">Agregar recomendación</button></div>
       <div class="chips"></div>
-      <div class="field"><label>Observaciones adicionales</label><textarea class="customText" placeholder="Agregue acuerdos o apoyos familiares necesarios..."></textarea></div>
+      <div class="field"><label>Observaciones adicionales (Opcional)</label><textarea class="customText" placeholder="Agregue acuerdos o apoyos familiares necesarios..."></textarea></div>
     </section>
 
 
@@ -634,6 +634,7 @@ const DOCENTES = [
   "Esteban Morgado Y Gonzalez",
   "Estela Hernandez Huerta",
   "Fidel Galvan Zavaleta",
+  "Gabriela Sanchez Rodriguez",
   "Gisela Del Rio De La Rosa",
   "Hector Vargas Carre",
   "Ivan Alfredo Riaño Viveros",
@@ -671,7 +672,7 @@ const DOCENTES = [
   "Victor Hugo Perez Y Quintana"
 ];
 const CICLOS = ["2025-2026","2026-2027","2027-2028","2028-2029","2029-2030","2030-2031","2031-2032","2032-2033"];
-const REPORTES_NO_DISCIPLINAS = ["Reporte de Prefectura","Reporte de Trabajo Social"];
+const REPORTES_NO_DISCIPLINAS = ["Reporte de Prefectura","Reporte de Trabajo Social","Reporte de USAER"];
 const DISCIPLINAS_POR_GRADO = {
   "1": ["Español","Inglés","Artes","Matemáticas","Biología","Geografía","Historia","Formación Cívica y Ética","Tecnología","Educación Física",...REPORTES_NO_DISCIPLINAS],
   "2": ["Español","Inglés","Artes","Matemáticas","Física","Historia","Formación Cívica y Ética","Tecnología","Educación Física",...REPORTES_NO_DISCIPLINAS]
@@ -1151,15 +1152,18 @@ function fillOptionSelects(){
       sel.value='';
       updateSectionActionVisibility(key);
     });
-    $('.clearSection', sec).addEventListener('click',()=>{
-      state.secciones[key]=[];
-      $('.customText',sec).value='';
-      state.custom[key]='';
-      renderChips(key);
-      sel.value='';
-      updateSectionActionVisibility(key);
-      saveLocal(false);
-    });
+    const clearBtn = $('.clearSection', sec);
+    if(clearBtn){
+      clearBtn.addEventListener('click',()=>{
+        state.secciones[key]=[];
+        $('.customText',sec).value='';
+        state.custom[key]='';
+        renderChips(key);
+        sel.value='';
+        updateSectionActionVisibility(key);
+        saveLocal(false);
+      });
+    }
     updateSectionActionVisibility(key);
   });
 }
@@ -1961,7 +1965,7 @@ function renderContenidoSelect(){
   if(esReporteDepartamento(d)){
     sel.innerHTML = '<option value="">No aplica para este reporte</option>';
     sel.dataset.items = '[]';
-    $('#currDetail').innerHTML = '<span class="empty">Prefectura y Trabajo Social no requieren capturar Contenidos o PDA. Continúe con Dificultades.</span>';
+    $('#currDetail').innerHTML = '<span class="empty">Prefectura, Trabajo Social y USAER no requieren capturar Contenidos o PDA. Continúe con Dificultades.</span>';
     updateCurrActionVisibility();
     return;
   }
@@ -2234,7 +2238,8 @@ function init(){
   $('#consultaPDF').addEventListener('click',generarPDFConsulta);
   $('#contenidoSelect').addEventListener('change',showCurrDetail);
   $('#addCurr').addEventListener('click',addCurrSelected);
-  $('#clearCurr').addEventListener('click',()=>{ state.curriculares=[]; const sel=$('#contenidoSelect'); if(sel) sel.value=''; updateCurrActionVisibility(); renderCurrSelected(); saveLocal(false); });
+  const clearCurrBtn = $('#clearCurr');
+  if(clearCurrBtn) clearCurrBtn.addEventListener('click',()=>{ state.curriculares=[]; const sel=$('#contenidoSelect'); if(sel) sel.value=''; updateCurrActionVisibility(); renderCurrSelected(); saveLocal(false); });
   $('#prevBtn').addEventListener('click',()=>showPage(paginaAnteriorDesdeActual()));
   $('#nextBtn').addEventListener('click',async ()=>{ if(currentPage<PAGES.length-1){ if(!validarPaginaAntesDeAvanzar()) return; showPage(paginaSiguienteDesdeActual()); } else { await guardarGenerarPDF(); } });
   $('#otraMismoGrupo').addEventListener('click',prepararOtraFichaMismoGrupo);
