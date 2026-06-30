@@ -395,7 +395,20 @@ body :is(.chip,.chip span){font-size:var(--ui-font-chip)!important;}
 .consultaRegistro h4{margin:0 0 8px;color:#173b74;font-size:17px}
 .consultaRegistro p{margin:5px 0;color:#25364a;white-space:pre-line}
 .consultaEmpty{color:#98a2b3;font-style:italic}
-@media (max-width:760px){.consultaMeta{grid-template-columns:1fr}.consultaList{grid-template-columns:1fr}.consultaFichaResumen{padding:12px}.consultaFichaResumen h3{font-size:19px}}
+.consultaStats{margin:10px 0 14px;background:#ffffff;border:1px solid #dbe3ec;border-radius:16px;padding:12px;box-shadow:0 5px 14px rgba(15,23,42,.06)}
+.consultaStatsTitle{font-weight:900;color:#173b74;margin:0 0 8px;font-size:15px}
+.consultaStatsStatus{color:#617085;font-size:13px;line-height:1.35}
+.consultaStats table{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:12px;overflow:hidden}
+.consultaStats th,.consultaStats td{border:1px solid #d9e5f2;padding:7px 8px;text-align:center}
+.consultaStats th{background:#e8f3ff;color:#173b74;font-weight:900}
+.consultaStats td:first-child,.consultaStats td:nth-child(2),.consultaStats td:nth-child(3){font-weight:900}
+.finalSuccessBox{max-width:8.5in;margin:12px auto 0;background:linear-gradient(135deg,#f3f8ff,#fff7df);border:1px solid #d7e2ef;border-radius:22px;padding:22px;text-align:center;box-shadow:0 10px 24px rgba(15,23,42,.10)}
+.finalSuccessMsg{font-size:20px;font-weight:900;color:#1f6f48;background:#e8f5ed;border:1px solid #b9dbc6;border-radius:16px;padding:13px 14px;margin:0 0 16px}
+.finalSuccessBox h3{font-size:18px!important;line-height:1.35!important;color:#173b74!important;margin:0 0 14px!important}
+.finalSuccessBox .repeatActions{justify-content:center;gap:12px}
+.finalSuccessBox .finalOption{min-width:150px;min-height:86px;flex-direction:column;gap:5px;padding:12px 16px!important}
+.finalSuccessBox .finalOption .btnFuncIcon{width:38px;height:38px;min-width:38px;font-size:24px;border-radius:14px}
+@media (max-width:760px){.consultaMeta{grid-template-columns:1fr}.consultaList{grid-template-columns:1fr}.consultaFichaResumen{padding:12px}.consultaFichaResumen h3{font-size:19px}.consultaStats{padding:9px}.consultaStats table{font-size:12px}.consultaStats th,.consultaStats td{padding:6px 5px}.finalSuccessBox{padding:16px}.finalSuccessBox .repeatActions{flex-direction:column}.finalSuccessBox .finalOption{width:100%}}
 
 @media print{
   body{background:#fff;--ui-font-scale:1!important}
@@ -559,11 +572,12 @@ body :is(.chip,.chip span){font-size:var(--ui-font-chip)!important;}
 
     <section class="page" id="page-consulta">
       <h2>Consultar fichas capturadas</h2>
+      <div id="consultaEstadistica" class="consultaStats noPrint"><div class="consultaStatsTitle">Tabla estadística de grupos con fichas registradas</div><div class="consultaStatsStatus">Cargando registros disponibles...</div></div>
       <p class="help">Seleccione turno, grado y grupo para mostrar los alumnos que ya cuentan con registros. Si existen varias capturas con el mismo nombre del alumno, grado y grupo, se considerarán de la misma persona y se mostrará toda la información integrada por disciplina.</p>
       <div class="consultaPanel noPrint">
         <div class="grid">
           <div class="field"><label for="consultaTurno">Turno</label><select id="consultaTurno"><option value="">Seleccione turno</option><option value="Matutino">Matutino</option><option value="Vespertino">Vespertino</option></select></div>
-          <div class="field"><label for="consultaGrado">Grado</label><select id="consultaGrado"><option value="">Seleccione grado</option><option value="1">1°</option><option value="2">2°</option><option value="3">3°</option></select></div>
+          <div class="field"><label for="consultaGrado">Grado</label><select id="consultaGrado"><option value="">Seleccione grado</option><option value="1">1°</option><option value="2">2°</option></select></div>
           <div class="field"><label for="consultaGrupo">Grupo</label><select id="consultaGrupo" disabled><option value="">Seleccione turno y grado</option></select></div>
         </div>
         <div id="consultaStatus" class="studentStatus">Seleccione turno, grado y grupo para consultar.</div>
@@ -583,12 +597,13 @@ body :is(.chip,.chip span){font-size:var(--ui-font-chip)!important;}
 
     <section class="page" id="page-final">
       <div class="printWrap"><div class="sheet" id="sheet"></div></div>
-      <div class="repeatBox noPrint" id="repeatBox" style="display:none">
+      <div class="repeatBox finalSuccessBox noPrint" id="repeatBox" style="display:none">
+        <div class="finalSuccessMsg">El registro de la ficha ha sido realizada con éxito</div>
         <h3>¿Desea elaborar otra ficha descriptiva para otro alumno de este mismo grupo?</h3>
         <div class="repeatActions">
-          <button class="btn green big" id="otraMismoGrupo" type="button">Sí</button>
-          <button class="btn secondary big" id="otraConfig" type="button">No</button>
-          <button class="btn secondary big" id="finalBackInicio" type="button">Regresar al inicio</button>
+          <button class="btn green big finalOption" id="otraMismoGrupo" type="button">Sí</button>
+          <button class="btn secondary big finalOption" id="otraConfig" type="button">No</button>
+          <button class="btn secondary big finalOption" id="finalBackInicio" type="button">Regresar al inicio</button>
         </div>
       </div>
     </section>
@@ -898,12 +913,25 @@ function validarPaginaAntesDeAvanzar(){
 
 function ocultarOpcionesContinuar(){
   const box = $('#repeatBox');
+  const printWrap = $('#page-final .printWrap');
+  const footer = $('.footerBtns');
+  const nextBtn = $('#nextBtn');
   if(box) box.style.display = 'none';
+  if(printWrap) printWrap.style.display = '';
+  if(footer && PAGES[currentPage] === 'final') footer.style.display = 'flex';
+  if(nextBtn) nextBtn.style.display = '';
 }
 function mostrarOpcionesContinuar(){
   const box = $('#repeatBox');
+  const printWrap = $('#page-final .printWrap');
+  const footer = $('.footerBtns');
+  const nextBtn = $('#nextBtn');
+  if(printWrap) printWrap.style.display = 'none';
+  if(nextBtn) nextBtn.style.display = 'none';
+  if(footer) footer.style.display = 'none';
   if(!box) return;
   box.style.display = 'block';
+  aplicarIconosBotones(box);
   box.scrollIntoView({behavior:'smooth', block:'center'});
 }
 function textoSeccionPlano(key){
@@ -1564,6 +1592,7 @@ function mostrarConsultaFichas(){
   registrosFicha = null;
   registrosFichaPromise = null;
   updateConsultaGroups();
+  actualizarEstadisticaConsulta();
   updateFieldStates(page || document);
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -1745,6 +1774,7 @@ function filtrarRegistrosConsulta(rows){
     const grupoRegistro = normalizarGrupo(r.grupo);
     const turnoRegistro = normalizarTexto(r.turno);
 
+    if(!['1','2'].includes(gradoRegistro)) return false;
     if(gradoSeleccionado && gradoRegistro && gradoRegistro !== gradoSeleccionado) return false;
     if(grupoSeleccionado && grupoRegistro && grupoRegistro !== grupoSeleccionado) return false;
     if(turnoSeleccionado && turnoRegistro && turnoRegistro !== turnoSeleccionado) return false;
@@ -1758,10 +1788,61 @@ function combinacionesDisponiblesConsulta(rows){
     if(!nombreAlumnoConsulta(r)) return;
     const turno = r.turno || 'Sin turno';
     const grado = normalizarGrado(r.grado || r.gradoTexto) || 'Sin grado';
+    if(!['1','2'].includes(String(grado))) return;
     const grupo = normalizarGrupo(r.grupo) || 'Sin grupo';
     set.add(`${turno} - ${grado}° - ${grupo}`);
   });
   return Array.from(set).sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+}
+function renderEstadisticaConsulta(rows){
+  const cont = $('#consultaEstadistica');
+  if(!cont) return;
+  const mapa = new Map();
+  rows.map(normalizarRegistroFicha).forEach(r=>{
+    const nombre = nombreAlumnoConsulta(r);
+    const grado = normalizarGrado(r.grado || r.gradoTexto);
+    const grupo = normalizarGrupo(r.grupo);
+    const turno = r.turno || 'Sin turno';
+    if(!nombre || !['1','2'].includes(grado) || !grupo) return;
+    const clave = `${turno}|${grado}|${grupo}`;
+    if(!mapa.has(clave)){
+      mapa.set(clave,{turno,grado,grupo,fichas:0,alumnos:new Set(),disciplinas:new Set()});
+    }
+    const item = mapa.get(clave);
+    item.fichas += 1;
+    item.alumnos.add(claveAlumnoConsulta(r));
+    if(r.disciplina) item.disciplinas.add(r.disciplina);
+  });
+  const datos = Array.from(mapa.values()).sort((a,b)=>{
+    const g = Number(a.grado) - Number(b.grado);
+    if(g) return g;
+    const t = String(a.turno).localeCompare(String(b.turno),'es',{sensitivity:'base'});
+    if(t) return t;
+    return String(a.grupo).localeCompare(String(b.grupo),'es',{sensitivity:'base'});
+  });
+  if(!datos.length){
+    cont.innerHTML = '<div class="consultaStatsTitle">Tabla estadística de grupos con fichas registradas</div><div class="consultaStatsStatus">Aún no se encontraron registros de fichas para 1° o 2°.</div>';
+    return;
+  }
+  const filas = datos.map(x=>`<tr><td>${esc(x.grado)}°</td><td>${esc(x.turno)}</td><td>${esc(x.grupo)}</td><td>${x.alumnos.size}</td><td>${x.fichas}</td><td>${x.disciplinas.size}</td></tr>`).join('');
+  cont.innerHTML = `
+    <div class="consultaStatsTitle">Tabla estadística de grupos con fichas registradas</div>
+    <table aria-label="Grupos con fichas registradas">
+      <thead><tr><th>Grado</th><th>Turno</th><th>Grupo</th><th>Alumnos</th><th>Fichas</th><th>Disciplinas</th></tr></thead>
+      <tbody>${filas}</tbody>
+    </table>`;
+}
+async function actualizarEstadisticaConsulta(){
+  const cont = $('#consultaEstadistica');
+  if(!cont) return;
+  cont.innerHTML = '<div class="consultaStatsTitle">Tabla estadística de grupos con fichas registradas</div><div class="consultaStatsStatus">Cargando registros disponibles...</div>';
+  try{
+    const rows = await cargarRegistrosFicha(true);
+    renderEstadisticaConsulta(rows);
+  }catch(err){
+    console.warn('No fue posible cargar la estadística de consulta:', err);
+    cont.innerHTML = '<div class="consultaStatsTitle">Tabla estadística de grupos con fichas registradas</div><div class="consultaStatsStatus">No fue posible cargar la tabla estadística. Puede intentar seleccionar turno, grado y grupo para consultar.</div>';
+  }
 }
 function agruparRegistrosPorAlumno(registros){
   const map = new Map();
