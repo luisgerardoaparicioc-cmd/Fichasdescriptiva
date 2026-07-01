@@ -441,6 +441,53 @@ body :is(.chip,.chip span){font-size:var(--ui-font-chip)!important;}
   .consultaStatsCompact .gradoCol{width:40px!important;font-size:10px!important}
 }
 
+/* Aviso inicial de importancia y confidencialidad */
+.importanteInicio{
+  margin:16px 0 10px;
+  border:1px solid #efc86b;
+  border-left:7px solid var(--dorado);
+  border-radius:18px;
+  background:linear-gradient(145deg,#fff9e8,#ffffff);
+  padding:15px 16px;
+  box-shadow:0 8px 20px rgba(15,23,42,.07);
+  color:#26364a;
+  line-height:1.45;
+}
+.importanteInicio h3{
+  margin:0 0 10px;
+  color:#8a1538;
+  font-size:18px;
+  letter-spacing:.2px;
+}
+.importanteInicio p{
+  margin:8px 0;
+  font-size:14px;
+  text-align:justify;
+}
+.importanteInicio strong{
+  color:#0b2548;
+}
+.importanteInicio.oculto{
+  display:none!important;
+}
+@media (max-width:760px){
+  .importanteInicio{
+    margin:13px 0 8px;
+    padding:12px;
+    border-radius:16px;
+    border-left-width:5px;
+  }
+  .importanteInicio h3{
+    font-size:16px;
+    margin-bottom:8px;
+  }
+  .importanteInicio p{
+    font-size:12.8px!important;
+    line-height:1.36;
+    text-align:left;
+  }
+}
+
 @media print{
   body{background:#fff;--ui-font-scale:1!important}
   .fontSizePanel{display:none !important}
@@ -498,6 +545,11 @@ body :is(.chip,.chip span){font-size:var(--ui-font-chip)!important;}
       <div class="introDocente">
         <div class="field"><label for="docenteInicio">Nombre del docente</label><select id="docenteInicio"><option value="">Seleccione docente</option></select></div>
         <div class="field" id="docenteInicioOtroBox" style="display:none;margin-top:14px"><label for="docenteInicioOtro">Escriba el nombre del docente</label><input id="docenteInicioOtro" placeholder="Nombre completo del docente"></div>
+        <div class="importanteInicio" id="mensajeImportanteInicio">
+          <h3>IMPORTANTE:</h3>
+          <p>Las fichas descriptivas individuales deben elaborarse prioritariamente para alumnas y alumnos que presentan riesgo de no alcanzar los aprendizajes esperados, que requieren apoyos específicos, que cuentan con condiciones personales que demandan atención particular, que fueron promovidos con condiciones o que se encuentran en situación de exclusión.</p>
+        </div>
+
         <div class="actions" id="docenteInicioActions">
           <button class="btn green withIcon" id="aceptarDocente" type="button" style="display:none">
             <span class="btnFuncIcon" aria-hidden="true">📝</span>
@@ -1287,10 +1339,12 @@ function updateDocenteInicioUI(){
   const btn = $('#aceptarDocente');
   const btnConsulta = $('#consultarFichas');
   const aviso = $('#docenteInicioAviso');
+  const mensajeImportante = $('#mensajeImportanteInicio');
   if(otroBox) otroBox.style.display = isOtro ? '' : 'none';
   const final = docenteInicioFinal();
   if(btn) btn.style.display = final ? '' : 'none';
   if(btnConsulta) btnConsulta.style.display = final ? '' : 'none';
+  if(mensajeImportante) mensajeImportante.classList.toggle('oculto', !!final);
   if(aviso) aviso.textContent = final ? `Docente seleccionado: ${final}` : 'Los botones aparecerán cuando seleccione un docente.';
 }
 function guardarDocenteInicialEnEstado(){
