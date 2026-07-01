@@ -873,9 +873,19 @@ function showPage(i){
     footer.style.display = pageName==='inicioDocente' ? 'none' : 'flex';
     footer.classList.toggle('is-final', isFinal);
   }
-  $('#prevBtn').style.visibility = i<=1 ? 'hidden' : 'visible';
-  $('#prevBtn').textContent = isFinal ? 'Regresar' : 'Anterior';
-  $('#nextBtn').textContent = isFinal ? 'Guardar y generar PDF' : 'Siguiente';
+  const prevBtn = $('#prevBtn');
+  const nextBtn = $('#nextBtn');
+  if(prevBtn){
+    prevBtn.style.visibility = i<=1 ? 'hidden' : 'visible';
+    prevBtn.textContent = isFinal ? 'Regresar' : 'Anterior';
+  }
+  if(nextBtn){
+    nextBtn.textContent = isFinal ? 'Guardar y generar PDF' : 'Siguiente';
+    // Al elegir “Sí” después de guardar, el botón Siguiente había quedado oculto
+    // por la vista de éxito. Siempre se restaura al cambiar de página.
+    nextBtn.style.display = '';
+    nextBtn.disabled = false;
+  }
   if(pageName==='curricular') { updateCurriculumControls(); }
   if(pageName==='final') { renderSheet(); ocultarOpcionesContinuar(); }
   if(pageName==='inicioDocente') { updateDocenteInicioUI(); }
@@ -2321,7 +2331,18 @@ function prepararOtraFichaMismoGrupo(){
   applyState();
   saveLocal(false);
   showPage(1);
-  setTimeout(()=>actualizarListaAlumnos(),80);
+  const footer = $('.footerBtns');
+  const nextBtn = $('#nextBtn');
+  if(footer) footer.style.display = 'flex';
+  if(nextBtn){
+    nextBtn.style.display = '';
+    nextBtn.disabled = false;
+    nextBtn.textContent = 'Siguiente';
+  }
+  setTimeout(()=>{
+    actualizarListaAlumnos();
+    aplicarIconosBotones();
+  },80);
 }
 function prepararOtraFichaNuevaConfiguracion(){
   captureState();
